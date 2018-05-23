@@ -1,0 +1,8 @@
+/*.individualAnswer{
+  animation: revealAnswer 5s;
+}
+
+@keyframes revealAnswer{
+  from {top: 0px};
+  to {top: 50px}
+}*/

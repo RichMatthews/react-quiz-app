@@ -1,0 +1,17 @@
+.App {
+  text-align: center;
+  width: 500px;
+  margin: auto;
+  position: relative;
+}
+
+.animate {
+  position: relative;
+  -webkit-animation: shiftLeft 2s infinite;
+  -webkit-animation-iteration-count: 1;
+}
+
+@-webkit-keyframes shiftLeft {
+  from {right: 0px;}
+  to {right: 1000px;}
+}
