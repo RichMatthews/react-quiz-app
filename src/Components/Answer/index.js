@@ -1,29 +1,38 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Radio from '@material-ui/core/Radio';
-import Types from '../../redux/types';
 import data from '../../data.js';
+import { mapStateToProps, mapDispatchToProps } from '../../redux/mappingFunctions';
+import findQuestions from '../../utils/findQuestions';
 import './index.css';
-
 class Answer extends React.Component {
+
+  state = {
+    category: ''
+  }
+
+  componentDidMount = () => {
+    this.setState({category: this.props.currentUserStatus.currentCategory})
+  }
 
   findAnswers = () => {
     try{
-      return data.questions.find(question => question.id === this.props.currentQuestion).possibleAnswers
+      return findQuestions(data, this.state.category, this.props.currentUserStatus, this.props.currentQuestion).possibleAnswers;
     }catch(e){
-      console.log('error');
+      //console.log('answer error');
     }
   }
 
   render(){
     return(
       <div className="answers">
-        {this.findAnswers() ?
-          this.findAnswers().map((answer) => {
+        { this.state.category &&
+          this.state.category.length > 1 &&
+          this.findAnswers() ?
+          this.findAnswers().map((answer, index) => {
             return (
-            <div onChange={(e) => this.props.updateAnswer(e)}>
-              <Radio
-                checked={this.props.answer === answer.title}
+            <div key={index} onChange={(e) => this.props.updateAnswer(e)}>
+              <input
+                type="radio"
                 value={answer.title}
                 name="answers"
               />
@@ -37,23 +46,7 @@ class Answer extends React.Component {
     )
   }
 }
-
-const mapStateToProps = state => ({
-  questions: state.questions,
-  currentQuestion: state.currentQuestion
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  updateAnswer: (answer) => {
-    const selectedAnswer = answer.target.value;
-    dispatch({
-      type: Types.UPDATE_ANSWER,
-      answer: selectedAnswer
-    });
-  }
-})
-
-  export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(Answer);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Answer);

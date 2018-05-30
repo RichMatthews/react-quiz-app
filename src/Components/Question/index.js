@@ -1,19 +1,29 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import data from '../../data.js';
+import { mapStateToProps, mapDispatchToProps } from '../../redux/mappingFunctions';
+import findQuestions from '../../utils/findQuestions';
 import './index.css';
 
 class Question extends React.Component {
+
+  state = {
+    category: ''
+  }
+
+  componentDidMount = () => {
+    this.setState({category: this.props.currentUserStatus.currentCategory})
+  }
+
   findQuestion = () => {
     try{
-      return data.find(question => question.category === 'geography').questions[0].title
+      return findQuestions(data, this.state.category, this.props.currentUserStatus, this.props.currentQuestion).title;
     }catch(e){
-      console.log('error');
+      //console.log('answer error');
     }
   }
 
   render(){
-
     return(
       <div className="question">
           {this.findQuestion()}
@@ -22,16 +32,8 @@ class Question extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  questions: state.questions,
-  currentQuestion: state.currentQuestion
-});
 
-const mapDispatchToProps = (dispatch) => ({
-
-})
-
-  export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(Question);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Question);

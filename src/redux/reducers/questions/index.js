@@ -1,15 +1,15 @@
 import Types from '../../types';
+import data from '../../../data';
+
 const initialState = [];
 
 export default(state = initialState, action) => {
+  console.log(action,' this is action');
   switch(action.type){
-    case Types.SUBMIT_QUESTION: {
-      const answerInfo = {
-        questionId: action.answer.questionId,
-        answer: action.answer.answer
-      }
-      const answer = [].concat(state).concat(answerInfo)
-      return answer;
+    case Types.LOAD_QUESTIONS_FOR_CHOSEN_CATEGORY: {
+      const category = data.find(c => c.categoryName === action.categoryName).quizzes;
+      const findQuiz = category.find(quiz => quiz.quizId === action.categoryId)
+      return [].concat(findQuiz.questions);
     }
     default:
       return state;

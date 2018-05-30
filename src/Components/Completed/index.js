@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { mapStateToProps, mapDispatchToProps } from '../../redux/mappingFunctions';
 import './index.css'
 
 class Completed extends React.Component {
@@ -7,10 +8,10 @@ class Completed extends React.Component {
     return(
       <div>
         {
-          this.props.results.map(result => (
+          this.props.quizResults.answers.map(result => (
             this.props.questions.map(question => (
-              result.id === question.questionId ?
-                <div className="individualAnswer">You put {question.answer}, the correct answer is: {result.correctAnswer}</div>
+              result.questionId === question.questionId ?
+                <div className="individualAnswer">You put {result.answer}, the correct answer is: {question.correctAnswer}</div>
                 :
                 null
               )
@@ -22,13 +23,7 @@ class Completed extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  questions: state.questions,
-  answer: state.answer,
-  currentQuestion: state.currentQuestion,
-  results: state.results
-});
-
-  export default connect(
-    mapStateToProps,
-  )(Completed);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Completed);
