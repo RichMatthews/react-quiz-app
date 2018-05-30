@@ -25,19 +25,44 @@ class Home extends React.Component {
       // })
   }
 
+  findCategory = () => {
+    return this.state.quizCategories.map(category => (
+      <div>
+        <div className="header">
+          <li>
+            <Link className="categoryLink" to={`/categories/${category.title}`} >{category.title}</Link>
+          </li>
+        </div>
+        <Route path={`/categories/${category.title}`} component={Categories}/>
+      </div>
+    ))
+  }
+
+  // <div>
+  //     <div className="header">
+  //       {this.state.quizCategories.map(category => (
+  //           <Link className="categoryLink" to={`/categories/${category.title}`} >{category.title}</Link>
+  //       ))}
+  //     </div>
+  //   {this.state.quizCategories.map(category => (
+  //     <Route path={`/categories/${category.title}`} component={Categories}/>
+  //   ))}
+  // </div>
+
   render(){
     console.warn = console.error = () => {};
     return(
       <ConnectedRouter history={history}>
         <div>
-            <div className="header">
-              {this.state.quizCategories.map(category => (
-                  <Link className="categoryLink" to={`/categories/${category.title}`} >{category.title}</Link>
-              ))}
-            </div>
-          {this.state.quizCategories.map(category => (
-            <Route path={`/categories/${category.title}`} component={Categories}/>
-          ))}
+          {this.state.quizCategories &&
+            this.state.quizCategories.length > 0 ? (
+              this.findCategory()
+            ) :
+            (
+              <div>nah</div>
+            )
+          }
+
         </div>
       </ConnectedRouter>
     )

@@ -25,19 +25,35 @@ class Categories extends React.Component {
     }
   }
 
+  findCategory = () => {
+    const userStatus = this.props.currentUserStatus;
+    if(userStatus.currentCategoryId){
+      return this.state.quizzes.map((quiz) => (
+        <div>
+          <li>
+            <Link to={`/categories/${quiz.category}/${quiz.quizId}`} >{quiz.title}</Link>
+          </li>
+          <Route path={`/categories/${userStatus.currentCategory}/${quiz.quizId}`} component={QuizComponent}/>
+        </div>
+      ))
+    }
+  }
+
   render(){
+    const userStatus = this.props.currentUserStatus;
     return(
       <ConnectedRouter history={history}>
         <div>
           <h3> Quizzes </h3>
-          {this.state.quizzes.map(category => (
-            <li>
-              <Link to={`/categories/${category.category}/${category.quizId}`} >{category.title}</Link>
-            </li>
-          ))}
-          {this.state.quizzes.map(category => {
-              <Route path={`/categories/${category.category}/${category.quizId}`} component={QuizComponent}/>
-          })}
+          {
+            this.state.quizzes &&
+              this.state.quizzes.length > 0 ? (
+              this.findCategory()
+            )
+            : (
+              <Route component={NoMatch} />
+            )
+          }
         </div>
       </ConnectedRouter>
     )
