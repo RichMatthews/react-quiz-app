@@ -29,7 +29,7 @@ class Categories extends React.Component {
     const userStatus = this.props.currentUserStatus;
     if(userStatus.currentCategoryId){
       return this.state.quizzes.map((quiz) => (
-        <div>
+        <div className="">
           <li>
             <Link to={`/categories/${quiz.category}/${quiz.quizId}`} >{quiz.title}</Link>
           </li>
